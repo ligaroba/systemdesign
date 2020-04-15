@@ -8,7 +8,7 @@
     <li>Choose a floor</li>
 </datalist>
 
-<h4>For System</h4>
+<h4>For Elevator System</h4>
 <datalist>
     <li>Get a list of the floors where the elevator is supposed to stop.</li>
     <li>Optimally choose any elevator and send it to the requested floor.</li>
