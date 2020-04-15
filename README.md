@@ -1,7 +1,6 @@
-<h1><b><br>Elevator System Design</b></h1>
+<h1><b>Elevator System Design</b></h1>
 <br>
 <h2>Requirement</h2>
-<br>
 <h4>For Users</h4>
 <datalist>
     <li>Call an elevator by pressing buttons in lobby</li>

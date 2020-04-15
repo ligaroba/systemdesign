@@ -90,7 +90,6 @@ public class Elevator {
        if(!isAstop.isEmpty()) {
            if(i==isAstop.peek())
                openDoors(isAstop.poll());
-
             while (!isAstop.isEmpty()) {
                 if (isAstop.peek() == i) {
                     openDoors(isAstop.poll());
