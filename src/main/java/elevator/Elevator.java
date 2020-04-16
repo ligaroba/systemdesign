@@ -87,6 +87,7 @@ public class Elevator {
       //if(getGoToFloor()!=getCurrentFloor() && getGoToFloor()>0)
         //        isAstop.add(getGoToFloor());
        int i = getCurrentFloor();
+       putAsAvailable=false;
        if(!isAstop.isEmpty()) {
            if(i==isAstop.peek())
                openDoors(isAstop.poll());
