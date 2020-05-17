@@ -11,12 +11,13 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class TestElevator {
 
     Elevator lift;
-    public static final int MAX_FLOOR_NUMBER=5;
+    public static final int MAX_FLOOR_NUMBER=10;
     private int currentFloor = 2;
     private PriorityQueue<Integer> floorToStopAt;
     private int [] testIsAstop;
@@ -26,6 +27,8 @@ public class TestElevator {
     static Map<String, Elevator.ElevatorStateObj> elevatorStateStore;
     static Elevator.ElevatorStateObj elevatorStateObj;
     static LogHandler logger;
+    static String elevID="";
+    static int maxLiftCapacity;
 
 
     @BeforeAll
@@ -36,6 +39,8 @@ public class TestElevator {
         elevatorStateStore=new HashMap<>();
         elevatorStateObj=new Elevator.ElevatorStateObj();
         logger =new LogHandler();
+        elevID="elev01";
+        maxLiftCapacity=10;
 
 
     }
@@ -46,45 +51,35 @@ public class TestElevator {
          * Setting up test parameters
          * */
         int visit=0;
-
-
         for(int i=0;i*random.nextInt(MAX_FLOOR_NUMBER)<MAX_FLOOR_NUMBER;i++) {
             visit = random.nextInt(MAX_FLOOR_NUMBER);
             floorPressed.add(visit);
         }
         floorToStopAt = new PriorityQueue<>(floorPressed);
-
      }
 
     @Test
+    @DisplayName("Testing passengers exceeds max capacity ")
     public void testCapacityMaxCheck(){
-        String elevID="ele001";
-        int maxLiftCapacity=10;
         elevatorStateObj.setIsCarAvailable(true);
         elevatorStateObj.setCurrCapacity(15);
         elevatorStateObj.setCurrFloorNumber(0);
         elevatorStateStore.put(elevID,elevatorStateObj);
         lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt,elevatorStateStore);
         lift.start();
-
     }
 
     @Test
-    @DisplayName("testFloorsHaveBeenVisitedGoingUp : \nThe list should contain same elements")
-    public void testFloorsHaveBeenVisitedGoingUp(){
-        System.out.println( "Current floor "+currentFloor+"  initial Queue isAStop " + floorToStopAt.toString());
+    @DisplayName("Start from random Floor")
+    public void testStartingCarFromRandomFloor(){
+        elevatorStateObj.setIsCarAvailable(true);
+        elevatorStateObj.setCurrCapacity(random.nextInt(maxLiftCapacity));
+        elevatorStateObj.setCurrFloorNumber(random.nextInt(MAX_FLOOR_NUMBER));
+        elevatorStateStore.put(elevID,elevatorStateObj);
+        lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt,elevatorStateStore);
         lift.start();
-        assertThat(floorToStopAt.isEmpty(),Matchers.equalTo(lift.getFloorsToStopAt().isEmpty()));
+        // assertThat(floorToStopAt.isEmpty(),Matchers.equalTo(lift.getFloorsToStopAt().isEmpty()));
+        assertTrue(floorToStopAt.isEmpty());
     }
-
-    public void testFloorsHaveBeenVisitedGoingDown(){
-          System.out.println( "Current floor "+currentFloor+"  initial Queue isAStop " + floorToStopAt.toString());
-            lift.start();
-            assertThat(floorToStopAt.isEmpty(),Matchers.equalTo(lift.getFloorsToStopAt().isEmpty()));
-
-        }
-
-
-
 
 }
