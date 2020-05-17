@@ -20,3 +20,13 @@
     <li>Show the changes in floors where the lift/car is currently at. </li>
     <li>Show the direction of motion (up/down).</li>
 </datalist>
+
+<h4>Activity Diagram</h4>
+<p align="center">
+  <img src="src/main/resources/projectdiagrams/Elevator_system_activitydiagram.png" width="350"  alt="Elevator system activity diagram" title="Activity diagram">
+ </p>
+
+<h4>Class Diagram</h4>
+<p align="center">
+  <img src="src/main/resources/projectdiagrams/Elevator_system_class_diagram.png" width="350"  alt="Elevator system class diagram" title="Class diagram">
+ </p>

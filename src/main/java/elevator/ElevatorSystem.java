@@ -28,11 +28,11 @@ public class ElevatorSystem {
             floorPressed.add(visit);
         }
         isAstop = new PriorityQueue<>(floorPressed);
-        lift = new Elevator("ele001",10,true,isAstop,currentFloor,MAX_FLOOR_NUMBER);
+       // lift = new Elevator("ele001",10,true,isAstop,currentFloor,MAX_FLOOR_NUMBER);
     }
 
 
-    public String getElevatorID() {
+   /* public String getElevatorID() {
         return lift.getElevID();
     }
     public boolean getPutAvailable(){
@@ -47,7 +47,7 @@ public class ElevatorSystem {
           * Create Multiple Threads to start multiple lifts
           * */
 
-    }
+   // }
 
     public void saveState(String elevid,boolean putAvailable,int currentFloor) {
          if(!liftState.containsKey(elevid))
