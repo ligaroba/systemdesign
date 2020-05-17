@@ -23,10 +23,10 @@
 
 <h4>Activity Diagram</h4>
 <p align="center">
-  <img src="src/main/resources/projectdiagrams/Elevator_system_activitydiagram.png" width="1350"  alt="Elevator system activity diagram" title="Activity diagram">
+  <img src="src/main/resources/projectdiagrams/Elevator_system_activitydiagram.png" width="2350"  alt="Elevator system activity diagram" title="Activity diagram">
  </p>
 
 <h4>Class Diagram</h4>
 <p align="center">
-  <img src="src/main/resources/projectdiagrams/Elevator_system_class_diagram.png" width="1350"  alt="Elevator system class diagram" title="Class diagram">
+  <img src="src/main/resources/projectdiagrams/Elevator_system_class_diagram.png" width="2350"  alt="Elevator system class diagram" title="Class diagram">
  </p>
