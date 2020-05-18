@@ -2,6 +2,7 @@ package elevator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.UtilsFunction;
 
@@ -58,23 +59,38 @@ public class TestElevatorSystem {
       }
 
     @Test
+    @DisplayName("Test Saving Elevator state")
     void testSaveStateOfElevator(){
 
 
     }
 
     @Test
+    @DisplayName("Test Assigning Queue to closet elevator from state")
     void testAssignQueueToLiftOptimally(){
 
 
     }
     @Test
+    @DisplayName("Test updating waiting list after successful trip")
     void testUpdateAvailableList(){
 
     }
 
     @Test
+    @DisplayName("Test boarding more passengers")
     void testAssignCarMorePassengers(){
+
+    }
+
+    @Test
+    @DisplayName("Test forced closing of Car doors")
+    void testForcedClosingOfElevatorDoors(){
+
+    }
+    @Test
+    @DisplayName("Test opening of Car doors")
+    void testForcedOpeningOfElevatorDoors(){
 
     }
 }
