@@ -1,6 +1,5 @@
 package elevator;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +24,7 @@ public class TestElevator {
     static Random random;
     private HashSet<Integer> floorPressed= new HashSet<>();
     static Map<String, Elevator.ElevatorStateObj> stateOfActiveElevators;
-    static Map<String, Elevator.ElevatorStateObj> listOfAvailableElevators;
+    static Map<String, Elevator.ElevatorStateObj> listOfWaitingElevators;
 
     static Elevator.ElevatorStateObj elevatorStateObj;
     static LogHandler logger;
@@ -39,6 +38,7 @@ public class TestElevator {
          * Setting up global parameters*/
         random=new Random();
         stateOfActiveElevators=new HashMap<>();
+        listOfWaitingElevators =new HashMap<>();
         elevatorStateObj=new Elevator.ElevatorStateObj();
         logger =new LogHandler();
         elevID="elev01";
@@ -68,8 +68,8 @@ public class TestElevator {
         elevatorStateObj.setCurrFloorNumber(0);
         stateOfActiveElevators.put(elevID,elevatorStateObj);
         lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt
-                ,stateOfActiveElevators,listOfAvailableElevators);
-        lift.start();
+                ,stateOfActiveElevators, listOfWaitingElevators);
+        lift.startElevator();
     }
 
     @Test
@@ -80,8 +80,8 @@ public class TestElevator {
         elevatorStateObj.setCurrFloorNumber(random.nextInt(MAX_FLOOR_NUMBER));
         stateOfActiveElevators.put(elevID,elevatorStateObj);
         lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt
-                ,stateOfActiveElevators,listOfAvailableElevators);
-        lift.start();
+                ,stateOfActiveElevators, listOfWaitingElevators);
+        lift.startElevator();
         // assertThat(floorToStopAt.isEmpty(),Matchers.equalTo(lift.getFloorsToStopAt().isEmpty()));
         assertTrue(floorToStopAt.isEmpty());
     }
