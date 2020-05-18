@@ -13,27 +13,34 @@ public class Elevator implements ElevatorMotion {
     private int currentFloor;
      private LogHandler logging;
     private Boolean isAvailable;
-    private Map<String, ElevatorStateObj> elevatorStateStore;
+    private Map<String, ElevatorStateObj> stateOfActiveElevators;
+    private Map<String, ElevatorStateObj> listOfAvailableElevators;
+
     private ElevatorStateObj currState;
 
 
 
-  public Elevator(String elevID,int maxLiftCapacity, LogHandler logging, Queue<Integer> floorsToStopAt, Map<String, ElevatorStateObj> elevatorStateStore){
+  public Elevator(String elevID,int maxLiftCapacity, LogHandler logging, Queue<Integer> floorsToStopAt
+                  ,Map<String, ElevatorStateObj> listOfActiveElevators
+                  ,Map<String, ElevatorStateObj> listOfAvailableElevators){
       this.elevID=elevID;
       this.maxLiftCapacity=maxLiftCapacity;
       this.logging=logging;
-      this.elevatorStateStore = elevatorStateStore;
+      this.stateOfActiveElevators = listOfActiveElevators;
+      this.listOfAvailableElevators = listOfAvailableElevators;
       this.floorsToStopAt = floorsToStopAt; // flag for all the floors elevator is supposed to stop
-      this.currState= this.elevatorStateStore.get(getElevID());
+      this.currState= this.stateOfActiveElevators.get(elevID);
   }
-
-
     public int getMaxLiftCapacity() {
         return maxLiftCapacity;
     }
 
-    public Map<String, ElevatorStateObj> getElevatorStateStore() {
-        return elevatorStateStore;
+    public Map<String, ElevatorStateObj> getStateOfActiveElevators() {
+        return stateOfActiveElevators;
+    }
+
+    public Map<String, ElevatorStateObj> getListOfAvailableElevators() {
+        return listOfAvailableElevators;
     }
 
     public Queue<Integer> getFloorsToStopAt() {
@@ -44,7 +51,14 @@ public class Elevator implements ElevatorMotion {
         return elevID;
     }
 
-    public void openDoors( int currentFloor){
+
+
+
+
+
+
+
+    private void openDoors( int currentFloor){
         String msg ;
         if(currentFloor>=0){
             try {
@@ -77,7 +91,9 @@ public class Elevator implements ElevatorMotion {
            changeState(currState);
            msg="Trip finished : Car is available, adding it to the waiting queue.";
            logging.writeInfo(msg);
-           // Add the elevator to Elevator available Queue
+           // Add the elevator to Elevator available List
+          listOfAvailableElevators.put(getElevID(),currState);
+          stateOfActiveElevators.remove(getElevID());
       }
 
 
@@ -95,7 +111,7 @@ public class Elevator implements ElevatorMotion {
             try {
                 currState.setCurrFloorNumber(currFloor);
                 currState.setCurrCapacity(currCapacity);
-                elevatorStateStore.put(elevID,currState);
+                stateOfActiveElevators.put(elevID,currState);
 
                 msg = "Current Floor : " + currFloor + " ... closing lift doors ...  ";
                 logging.writeInfo(msg);
@@ -118,16 +134,13 @@ public class Elevator implements ElevatorMotion {
                   }
 
               }
-            elevatorStateStore.put(elevID, currState);
+            stateOfActiveElevators.put(elevID, currState);
             msg = " Ready to go : closing doors..." ;
             logging.writeInfo(msg);
         }
 
     }
 
-    public void changeState(ElevatorStateObj currState) {
-        elevatorStateStore.put(elevID,currState);
-    }
 
     private void  movingCar(){
         /*
@@ -187,9 +200,27 @@ public class Elevator implements ElevatorMotion {
         }
 
     }
+    private void changeState(ElevatorStateObj currState) {
+        stateOfActiveElevators.put(elevID,currState);
+    }
 
     @Override
-    public void start() {
+    public void stopElevator() {
+        stop(currState,false);
+    }
+
+    @Override
+    public void openElevatorDoors() {
+          openDoors(currState.getCurrFloorNumber());
+    }
+
+    @Override
+    public void closeElevatorDoors() {
+         closeDoors(currState.getCurrCapacity(),currState.getCurrCapacity());
+    }
+
+    @Override
+    public void startElevator() {
         closeDoors(currState.getCurrCapacity(),currState.getCurrFloorNumber());
         movingCar();
     }

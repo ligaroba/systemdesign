@@ -24,7 +24,9 @@ public class TestElevator {
     private Boolean motionDirection;
     static Random random;
     private HashSet<Integer> floorPressed= new HashSet<>();
-    static Map<String, Elevator.ElevatorStateObj> elevatorStateStore;
+    static Map<String, Elevator.ElevatorStateObj> stateOfActiveElevators;
+    static Map<String, Elevator.ElevatorStateObj> listOfAvailableElevators;
+
     static Elevator.ElevatorStateObj elevatorStateObj;
     static LogHandler logger;
     static String elevID="";
@@ -36,7 +38,7 @@ public class TestElevator {
         /*
          * Setting up global parameters*/
         random=new Random();
-        elevatorStateStore=new HashMap<>();
+        stateOfActiveElevators=new HashMap<>();
         elevatorStateObj=new Elevator.ElevatorStateObj();
         logger =new LogHandler();
         elevID="elev01";
@@ -64,8 +66,9 @@ public class TestElevator {
         elevatorStateObj.setIsCarAvailable(true);
         elevatorStateObj.setCurrCapacity(15);
         elevatorStateObj.setCurrFloorNumber(0);
-        elevatorStateStore.put(elevID,elevatorStateObj);
-        lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt,elevatorStateStore);
+        stateOfActiveElevators.put(elevID,elevatorStateObj);
+        lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt
+                ,stateOfActiveElevators,listOfAvailableElevators);
         lift.start();
     }
 
@@ -75,8 +78,9 @@ public class TestElevator {
         elevatorStateObj.setIsCarAvailable(true);
         elevatorStateObj.setCurrCapacity(random.nextInt(maxLiftCapacity));
         elevatorStateObj.setCurrFloorNumber(random.nextInt(MAX_FLOOR_NUMBER));
-        elevatorStateStore.put(elevID,elevatorStateObj);
-        lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt,elevatorStateStore);
+        stateOfActiveElevators.put(elevID,elevatorStateObj);
+        lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt
+                ,stateOfActiveElevators,listOfAvailableElevators);
         lift.start();
         // assertThat(floorToStopAt.isEmpty(),Matchers.equalTo(lift.getFloorsToStopAt().isEmpty()));
         assertTrue(floorToStopAt.isEmpty());

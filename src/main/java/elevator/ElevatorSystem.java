@@ -1,81 +1,83 @@
 package elevator;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Random;
+import interfaces.ElevatorControls;
+import utils.LogHandler;
 
-public class ElevatorSystem {
+import java.util.*;
 
-    private HashMap<String,ElevatorState> liftState = new HashMap<>();
-    private Elevator lift;
-    public static final int MAX_FLOOR_NUMBER=5;
-    private int currentFloor = 5;
-    private PriorityQueue<Integer> isAstop;
-    static Random random;
-    private HashSet<Integer> floorPressed= new HashSet<>();
+public class ElevatorSystem implements ElevatorControls {
+
+    private Queue<Integer> downQueue = new LinkedList<>();
+    private Queue<Integer> upQueue= new LinkedList<>();
+    private Map<String,Elevator.ElevatorStateObj> listOfAvailableElevators;
+    private Map<String,Elevator.ElevatorStateObj> stateOfActiveElevators;
+    private List<Integer> listOfFloorPressesed = new ArrayList<>();
+    private LogHandler logger;
+    private List<Elevator> lisOfElevators;
+    private List<Integer> listOfPassengers;
 
 
-    public ElevatorSystem(){
-        random=new Random();
+    public ElevatorSystem(Map<String,Elevator.ElevatorStateObj> listOfAvailableElevators
+            ,Map<String,Elevator.ElevatorStateObj> stateOfActiveElevators
+            ,LogHandler logger
+            ,List<Integer> listOfPassengers){
 
-   }
+        this.listOfAvailableElevators=listOfAvailableElevators;
+        this.stateOfActiveElevators=stateOfActiveElevators;
+        this.logger=logger;
+        this.listOfPassengers=listOfPassengers;
 
-    public void assignElevator(){
-        int visit=0;
-        for(int i=0;i*random.nextInt(MAX_FLOOR_NUMBER)<MAX_FLOOR_NUMBER;i++) {
-            visit = random.nextInt(MAX_FLOOR_NUMBER);
-            floorPressed.add(visit);
+    }
+
+    private int getClosestElevator(Queue<Integer> floorQueue) {
+        int j = listOfAvailableElevators.size()*100;
+        int currMinDistance=Integer.MAX_VALUE;
+
+        if(!floorQueue.isEmpty()) {
+            for (int i = 0; i < listOfAvailableElevators.size(); i++) {
+                int carCurrFloorState = listOfAvailableElevators.get(i).getCurrFloorNumber();
+                int diff = Math.abs(carCurrFloorState - floorQueue.peek());
+                if (currMinDistance > diff) {
+                    currMinDistance = diff;
+                    j = i;
+                }
+
+            }
         }
-        isAstop = new PriorityQueue<>(floorPressed);
-       // lift = new Elevator("ele001",10,true,isAstop,currentFloor,MAX_FLOOR_NUMBER);
+        return j;
+    }
+
+    private int goingUpControl() {
+        return getClosestElevator(upQueue);
+
+    }
+    private int goingDownControl() {
+        return  getClosestElevator(downQueue);
     }
 
 
-   /* public String getElevatorID() {
-        return lift.getElevID();
-    }
-    public boolean getPutAvailable(){
-        return lift.getPutAsAvailable();
-    }
-    public int getCurrentFloor(){
-        return lift.getCurrentFloor();
+    @Override
+    public void startElevators() {
+        // TODO : Create Threads to call  goingUpControl and goingDownControl
+
     }
 
-    public void ElevatorRunning(){
-          /*
-          * Create Multiple Threads to start multiple lifts
-          * */
+    @Override
+    public void stopElevators() {
+        // TODO : All active elevators
 
-   // }
-
-    public void saveState(String elevid,boolean putAvailable,int currentFloor) {
-         if(!liftState.containsKey(elevid))
-            liftState.put(elevid,new ElevatorState(putAvailable,currentFloor));
     }
 
-    public ElevatorState getState(String elevid) {
-         if(liftState.containsKey(elevid))
-             return liftState.get(elevid);
-         return null;
+    @Override
+    public void openDoorsControl() {
+
+    }
+
+    @Override
+    public void closeDoorsControl() {
+
     }
 
 
-    class ElevatorState{
-        private int elevatorCurrentFloor;
-        private boolean elevatorPutAvailable;
 
-        ElevatorState(boolean putAvailable,int currentFloor){
-            this.elevatorPutAvailable=putAvailable;
-            this.elevatorCurrentFloor=currentFloor;
-        }
-
-        public int getElevatorCurrentFloor() {
-            return elevatorCurrentFloor;
-        }
-
-        public boolean getElevatorPutAvailable() {
-            return elevatorPutAvailable;
-        }
-    }
 }

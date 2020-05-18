@@ -1,5 +1,8 @@
 package interfaces;
 
 public interface ElevatorMotion {
-    void start();
+    void startElevator();
+    void stopElevator();
+    void openElevatorDoors();
+    void closeElevatorDoors();
 }
