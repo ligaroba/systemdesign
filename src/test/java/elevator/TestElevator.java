@@ -10,6 +10,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -70,6 +71,7 @@ public class TestElevator {
         lift = new Elevator(elevID,maxLiftCapacity,logger,floorToStopAt
                 ,stateOfActiveElevators, listOfWaitingElevators);
         lift.startElevator();
+        assertEquals(maxLiftCapacity,elevatorStateObj.getCurrCapacity());
     }
 
     @Test
