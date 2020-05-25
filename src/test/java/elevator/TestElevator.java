@@ -32,10 +32,12 @@ public class TestElevator {
     static int maxLiftCapacity;
 
 
+
     @BeforeAll
     static void SetupAll(){
         /*
          * Setting up global parameters*/
+
         random=new Random();
         stateOfActiveElevators=new HashMap<>();
         listOfWaitingElevators =new HashMap<>();
@@ -43,8 +45,6 @@ public class TestElevator {
         logger =new LogHandler();
         elevID="elev01";
         maxLiftCapacity=10;
-
-
     }
 
     @BeforeEach

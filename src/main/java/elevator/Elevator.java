@@ -74,7 +74,6 @@ public class Elevator implements ElevatorMotion {
         }
     }
 
-
     /*
   Close the doors:
   Why am not checking if currCapacity is zero to change the availability status of the car
